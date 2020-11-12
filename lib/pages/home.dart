@@ -68,7 +68,7 @@ class _MoneyHomePageState extends State<MoneyHomePage> {
                     "Income",
                     style: homePageTitleStyle,
                   ),
-                  subtitle: Text("200,000.00", style: homePageSubTitleStyle),
+                  subtitle: Text("200,670.00", style: homePageSubTitleStyle),
                 ),
               ),
               Expanded(
@@ -82,7 +82,7 @@ class _MoneyHomePageState extends State<MoneyHomePage> {
                     "Expense",
                     style: homePageTitleStyle,
                   ),
-                  subtitle: Text("200,000.00", style: homePageSubTitleStyle),
+                  subtitle: Text("70,000.00", style: homePageSubTitleStyle),
                 ),
               ),
             ],
@@ -100,7 +100,7 @@ class _MoneyHomePageState extends State<MoneyHomePage> {
                 "Balance",
                 style: homePageTitleStyle,
               ),
-              Text("200,000.00", style: homePageSubTitleStyle),
+              Text("129,030.00", style: homePageSubTitleStyle),
             ],
           ),
         ],
@@ -120,7 +120,7 @@ class _MoneyHomePageState extends State<MoneyHomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Today : Nov. 20, 2020", style: homePageTitleStyle),
+          Text("Today : Nov. 12, 2020", style: homePageTitleStyle),
           SizedBox(height: 10),
           _listTransaction(
             context,
