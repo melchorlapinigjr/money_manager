@@ -10,6 +10,7 @@ class TransactionDao{
   intMapStoreFactory.store(DBKeys.DB_TRANSACTION_KEY);
 
   Future<void> updateOrInsert(resource.Transaction transaction) async {
+
     await _store
         .record(transaction.id)
         .put(await _db, transaction.toSembastMap());

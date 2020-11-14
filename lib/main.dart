@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:money_manager/pages/home.dart';
+import 'package:get/get.dart';
 
-void main() {
+import 'pages/home.dart';
+import 'repository/db_repository.dart';
+
+void main(){
   runApp(MyApp());
 }
 
@@ -9,7 +12,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    DBRepository.instance.init();
+    return GetMaterialApp(
       title: 'Money Manager',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

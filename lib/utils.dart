@@ -29,6 +29,12 @@ var itemListTitleStyle = TextStyle(
   color: Colors.white,
 );
 
+var itemListTitleStyleBlack = TextStyle(
+  fontSize: 14,
+  fontWeight: FontWeight.w300,
+  color: Colors.black,
+);
+
 var itemListPriceIncomeStyle = TextStyle(
   fontSize: 12,
   fontWeight: FontWeight.w300,

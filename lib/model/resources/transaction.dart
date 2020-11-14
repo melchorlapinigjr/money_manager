@@ -1,3 +1,5 @@
+import 'package:better_uuid/uuid.dart';
+
 import './base_resource.dart';
 
 class Transaction extends BaseResource {
@@ -8,7 +10,7 @@ class Transaction extends BaseResource {
     this.date,
     this.amount,
     this.type,
-    this.categoryID,
+    this.categoryID=0,
     Map<String, dynamic> json,
   }) : super(json);
 
@@ -49,10 +51,15 @@ class Transaction extends BaseResource {
     'id': id,
     'name' : name,
     'description' : description,
-    'date' : date,
+    'date' : date.toString(),
     'amount' : amount,
     'type' : type,
     'category_id' : categoryID,
   };
 
+}
+
+int generateUniqueID(){
+  var id = Uuid.v1();
+  return id.time;
 }

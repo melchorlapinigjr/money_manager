@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:money_manager/pages/add_transaction.dart';
 
 class FooterWidget extends StatefulWidget {
@@ -11,8 +12,7 @@ class _FooterWidgetState extends State<FooterWidget> {
 
   void _onItemTapped(int index) {
     if (index == 1) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => AddTransaction()));
+      Get.to(AddTransaction());
     } else {
       print("pressed.");
     }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_manager/utils.dart';
 import 'package:money_manager/widgets/footer_widget.dart';
-import 'package:money_manager/widgets/header_widget.dart';
 
 class MoneyHomePage extends StatefulWidget {
   @override
@@ -12,14 +11,15 @@ class _MoneyHomePageState extends State<MoneyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Money Manager'),
+        backgroundColor: Blackbg,
+        leading: Icon(Icons.menu),
+      ),
       backgroundColor: Blackbg,
       body: SafeArea(
         child: Column(
           children: [
-            MyHeaderMenu(),
-            SizedBox(
-              height: 10,
-            ),
             Expanded(
               child: Container(
                 height: 170,

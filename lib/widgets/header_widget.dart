@@ -22,10 +22,6 @@ class _MyHeaderMenuState extends State<MyHeaderMenu> {
           SizedBox(
             width: 8,
           ),
-          Text(
-            "Money Manager",
-            style: TextStyle(color: Colors.white),
-          ),
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,

@@ -4,7 +4,7 @@ import 'package:money_manager/model/resources/transaction.dart';
 class TransactionRepository{
   final TransactionDao _dao = TransactionDao();
 
-  Future<void> updateOrInsert(Transaction transaction) async {
+  Future<void> upsert(Transaction transaction) async {
     //update db
     _dao.updateOrInsert(transaction);
   }

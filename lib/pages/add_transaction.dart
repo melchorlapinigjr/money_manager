@@ -1,7 +1,9 @@
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:get/get.dart';
 import 'package:money_manager/utils.dart';
+
+import '../controller/add_transaction_controller.dart';
 
 class AddTransaction extends StatefulWidget {
   @override
@@ -9,117 +11,124 @@ class AddTransaction extends StatefulWidget {
 }
 
 class _AddTransactionState extends State<AddTransaction> {
-  var amountController = MaskedTextController(mask: '000.000.00');
-  String dropdownValue = "Income";
+  final AddTransactionController controller =
+      Get.put(AddTransactionController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Add Transaction"),
+        centerTitle: true,
+      ),
       body: SafeArea(
-        child: Expanded(
-          child: Container(
-            margin: EdgeInsets.all(10),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.arrow_back),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    Text(
-                      'Add new transaction',
-                      style: TextStyle(color: SemiBlackbg),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  style: itemListTitleStyle,
-                  decoration: InputDecoration(
-                      icon: Icon(Icons.title), labelText: 'Transaction Name:'),
-                ),
-                TextFormField(
-                  style: itemListTitleStyle,
-                  decoration: InputDecoration(
-                      icon: Icon(Icons.description_sharp),
-                      hintText: 'Transaction description.',
-                      labelText: 'Description:'),
-                ),
-                DateTimePicker(
-                  icon: Icon(Icons.calendar_today_sharp),
-                  dateMask: 'd MMM, yyyy',
-                  initialValue: DateTime.now().toString(),
-                  firstDate: DateTime(2020),
-                  lastDate: DateTime(2100),
-                  dateLabelText: 'Date:',
-                  onChanged: (val) => print(val),
-                  validator: (val) {
-                    print(val);
-                    return null;
-                  },
-                  onSaved: (val) => print(val),
-                ),
-                TextFormField(
-                  style: itemListTitleStyle,
-                  decoration: InputDecoration(
-                      icon: Icon(Icons.attach_money_sharp),
-                      hintText: 'Transaction amount.',
-                      labelText: 'Amount:'),
-                  controller: amountController,
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "Type: ",
-                      style: TextStyle(
-                        color: Colors.black54,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    DropdownButton<String>(
-                      value: dropdownValue,
-                      icon: Icon(Icons.arrow_downward),
-                      iconSize: 20,
-                      style: TextStyle(color: Colors.deepPurple),
-                      underline: Container(
-                        height: 2,
-                        color: Colors.deepPurpleAccent,
-                      ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          dropdownValue = newValue;
-                        });
-                      },
-                      items: <String>['Income', 'Expense', 'Investment']
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 5),
-                RaisedButton.icon(
-                  icon: Icon(Icons.save_alt_rounded, size: 18),
-                  textColor: Colors.white,
-                  color: Colors.blueAccent,
-                  onPressed: () {
-                    // Respond to button press
-                  },
-                  label: Text("Save Transaction"),
-                ),
-              ],
-            ),
+        child: Container(
+          margin: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              ..._buildTransactionName(),
+              ..._buildDescription(),
+              ..._buildDate(),
+              ..._buildAmount(),
+              ..._buildType(),
+              _buildButton(),
+            ],
           ),
         ),
       ),
     );
   }
+
+  List<Widget> _buildTransactionName() => <Widget>[
+        const SizedBox(height: 10),
+        TextFormField(
+          controller: controller.nameController,
+          style: itemListTitleStyleBlack,
+          decoration: const InputDecoration(
+              icon: Icon(Icons.title), labelText: 'Transaction Name:'),
+        ),
+      ];
+
+  List<Widget> _buildDescription() => <Widget>[
+        const SizedBox(height: 8),
+        TextFormField(
+          controller: controller.descriptionController,
+          style: itemListTitleStyleBlack,
+          decoration: const InputDecoration(
+              icon: Icon(Icons.description_sharp),
+              hintText: 'Transaction description.',
+              labelText: 'Description:'),
+        ),
+      ];
+
+  List<Widget> _buildDate() => <Widget>[
+        const SizedBox(height: 8),
+        DateTimePicker(
+          icon: Icon(Icons.calendar_today_sharp),
+          dateMask: 'd MMM, yyyy',
+          initialValue: DateTime.now().toString(),
+          firstDate: DateTime(2020),
+          lastDate: DateTime(2100),
+          dateLabelText: 'Date:',
+          onChanged: (val) => controller.date = DateTime.parse(val),
+        ),
+      ];
+
+  List<Widget> _buildAmount() => <Widget>[
+        const SizedBox(height: 8),
+        TextFormField(
+          controller: controller.amountController,
+          style: itemListTitleStyleBlack,
+          decoration: const InputDecoration(
+              icon: Icon(Icons.attach_money_sharp),
+              hintText: 'Transaction amount.',
+              labelText: 'Amount:'),
+        ),
+      ];
+
+  List<Widget> _buildType() => <Widget>[
+        const SizedBox(height: 14),
+        Row(
+          children: [
+            Text(
+              "Type: ",
+              style: const TextStyle(
+                color: Colors.black54,
+              ),
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            Obx(() => DropdownButton<String>(
+                  value: controller.selectedType.value,
+                  icon: const Icon(Icons.arrow_downward),
+                  iconSize: 20,
+                  style: const TextStyle(color: Colors.deepPurple),
+                  underline: Container(
+                    height: 2,
+                    color: Colors.deepPurpleAccent,
+                  ),
+                  onChanged: (String newValue) {
+                    controller.selectedType.value = newValue;
+                  },
+                  items: controller.transactionType
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                )),
+          ],
+        ),
+        const SizedBox(height: 50),
+      ];
+
+  Widget _buildButton() => RaisedButton.icon(
+        icon: const Icon(Icons.save_alt_rounded, size: 18),
+        textColor: Colors.white,
+        color: Colors.blueAccent,
+        onPressed:()=>controller.save(),
+        label: const Text("Save Transaction"),
+      );
 }
