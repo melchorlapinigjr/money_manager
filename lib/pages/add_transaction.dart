@@ -109,7 +109,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 RaisedButton.icon(
                   icon: Icon(Icons.save_alt_rounded, size: 18),
                   textColor: Colors.white,
-                  color: Color(0xFF6200EE),
+                  color: Colors.blueAccent,
                   onPressed: () {
                     // Respond to button press
                   },
