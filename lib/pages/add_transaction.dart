@@ -5,12 +5,7 @@ import 'package:money_manager/utils.dart';
 
 import '../controller/add_transaction_controller.dart';
 
-class AddTransaction extends StatefulWidget {
-  @override
-  _AddTransactionState createState() => _AddTransactionState();
-}
-
-class _AddTransactionState extends State<AddTransaction> {
+class AddTransaction extends StatelessWidget {
   final AddTransactionController controller =
       Get.put(AddTransactionController());
 
@@ -128,7 +123,7 @@ class _AddTransactionState extends State<AddTransaction> {
         icon: const Icon(Icons.save_alt_rounded, size: 18),
         textColor: Colors.white,
         color: Colors.blueAccent,
-        onPressed:()=>controller.save(),
+        onPressed: () => controller.save(),
         label: const Text("Save Transaction"),
       );
 }
