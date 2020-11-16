@@ -24,7 +24,7 @@ class TransactionDao{
     final List<RecordSnapshot<int, Map<String, dynamic>>> recordSnapshots =
     await _store.find(await _db);
 
-     return recordSnapshots
+    return recordSnapshots
         .map((RecordSnapshot<int, Map<String, dynamic>> snapshot) =>
         resource.Transaction(json: snapshot.value))
         .toList();

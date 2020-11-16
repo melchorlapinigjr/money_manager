@@ -1,47 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:money_manager/controller/home_controller.dart';
+import 'package:money_manager/model/resources/transaction.dart';
 import 'package:money_manager/utils.dart';
 import 'package:money_manager/widgets/footer_widget.dart';
 
-class MoneyHomePage extends StatefulWidget {
-  @override
-  _MoneyHomePageState createState() => _MoneyHomePageState();
-}
+class MoneyHomePage extends StatelessWidget {
+  final HomeController homeController = Get.put(HomeController());
 
-class _MoneyHomePageState extends State<MoneyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Money Manager'),
+        title: const Text('Money Manager'),
         backgroundColor: Blackbg,
-        leading: Icon(Icons.menu),
+        leading: const Icon(Icons.menu),
       ),
       backgroundColor: Blackbg,
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: Container(
-                height: 170,
-                margin: EdgeInsets.all(5),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      _gradientHomeHeader(context),
-                      _listContainer(context),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
+        child: Obx(
+          () => Column(
+            children: [
+              _gradientHomeHeader(context),
+              _buildTransactions(homeController.transactions.toList(), context),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: FooterWidget(),
     );
   }
 
-  _gradientHomeHeader(BuildContext context) {
+  Widget _gradientHomeHeader(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
@@ -108,83 +98,40 @@ class _MoneyHomePageState extends State<MoneyHomePage> {
     );
   }
 
-  _listContainer(BuildContext context) {
+  ///build list of transaction
+  ///
+  ///
+  Widget _buildTransactions(
+      List<Transaction> transactions, BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(5),
-      margin: EdgeInsets.all(5),
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        color: SemiBlackbg,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("Today : Nov. 12, 2020", style: homePageTitleStyle),
-          SizedBox(height: 10),
-          _listTransaction(
-            context,
-            title: "Buy laptop",
-            description: "Asus x100-21, 12gb Ram, 8gb Graphics, i7",
-            icon: Icons.laptop,
-            amount: "50,000",
-            type: false,
-          ),
-          Divider(color: Colors.white30),
-          _listTransaction(
-            context,
-            title: "Buy New Cellpon",
-            description: "Huwaie Cellpon lang",
-            icon: Icons.signal_cellular_alt_sharp,
-            amount: "2,000",
-            type: false,
-          ),
-          Divider(color: Colors.white30),
-          _listTransaction(
-            context,
-            title: "Shoot sir Diaz",
-            description: "Basic package photo and video",
-            icon: Icons.money,
-            amount: "10,000",
-            type: true,
-          ),
-          Divider(color: Colors.white30),
-          SizedBox(height: 10),
-          Text("Yesterday : Nov. 20, 2020", style: homePageTitleStyle),
-          Divider(color: Colors.white30),
-          _listTransaction(
-            context,
-            title: "Buy Car",
-            description: "Nisan Calibre 4x2",
-            icon: Icons.bus_alert,
-            amount: "100,000",
-            type: false,
-          ),
-          Divider(color: Colors.white30),
-          _listTransaction(
-            context,
-            title: "Shoot sir Rommel",
-            description: "All in package",
-            icon: Icons.money,
-            amount: "45,000",
-            type: false,
-          ),
-          Divider(color: Colors.white30),
-          _listTransaction(
-            context,
-            title: "Buy Liquor",
-            description: "Bahalina 1 container",
-            icon: Icons.liquor,
-            amount: "600",
-            type: false,
-          ),
-          Divider(color: Colors.white30),
-        ],
-      ),
+      height: MediaQuery.of(context).size.height * .50,
+      child: transactions.length == 0
+          ? Center(
+              child: Text(
+                'No Data!',
+                style: TextStyle(color: Colors.grey),
+              ),
+            )
+          : ListView.builder(
+              itemCount: transactions.length,
+              itemBuilder: (BuildContext context, int index) {
+                Transaction transaction = transactions[index];
+                return _listTransaction(
+                  title: transaction.name,
+                  description: transaction.description,
+                  amount: transaction.amount.toString(),
+                  icon: Icons.extension,
+                  type: true,
+                );
+              },
+            ),
     );
   }
 
-  _listTransaction(BuildContext context,
+  ///build transaction widget
+  ///
+  ///
+  Widget _listTransaction(
       {String title,
       String description,
       String amount,
